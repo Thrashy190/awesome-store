@@ -4,9 +4,9 @@ Shop project for mobile development class
 
 ## Examples
 
-<img src="./assets/phone_one_col.png">
+<img src="./assets/phone_one_col.png" alt="1col" height="100">
 
-<img src="./assets/phone_two_col.png">
+<img src="./assets/phone_two_col.png" alt="2col" height="100">
 
 ## Getting Started
 
