@@ -1,6 +1,12 @@
-# shopapp
+# Awesome Store
 
-shop project
+Shop project for mobile development class
+
+## Examples
+
+<img src="phone_one_col.png">
+
+<img src="phone_two_col.png">
 
 ## Getting Started
 
