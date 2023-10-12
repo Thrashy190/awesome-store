@@ -3,10 +3,11 @@
 Shop project for mobile development class
 
 ## Examples
+<p align="left">
+  <img src="./assets/phone_one_col.png" alt="1col" height="100">
+  <img src="./assets/phone_two_col.png" alt="2col" height="100">
+</p>
 
-<img src="./assets/phone_one_col.png" alt="1col" height="100">
-
-<img src="./assets/phone_two_col.png" alt="2col" height="100">
 
 ## Getting Started
 
