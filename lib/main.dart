@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopapp/card.dart';
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 
 void main() {
   runApp(AwesomeStoreApp());
 }
-
 
 class AwesomeStoreApp extends StatelessWidget {
   @override
@@ -30,7 +29,7 @@ class _AwesomeStoreHomeState extends State<AwesomeStoreHome> {
   String text = '';
   int offset = 0;
   int limit = 10;
-  bool status = true;
+  bool status = false;
 
   @override
   void initState() {
@@ -85,6 +84,7 @@ class _AwesomeStoreHomeState extends State<AwesomeStoreHome> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: RefreshIndicator(
+      color: Colors.black,
       onRefresh: refresh,
       child: Column(
         children: [
@@ -113,13 +113,13 @@ class _AwesomeStoreHomeState extends State<AwesomeStoreHome> {
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
-              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
-                    icon:  Icon(status?Icons.table_rows:Icons.view_column),
-                    onPressed:() {
+                    icon: Icon(status ? Icons.view_column : Icons.menu),
+                    onPressed: () {
                       setState(() {
                         status = !status;
                       });
@@ -131,11 +131,14 @@ class _AwesomeStoreHomeState extends State<AwesomeStoreHome> {
           ),
           Expanded(
               child: products.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ))
                   : GridView.builder(
                       controller: controller,
                       padding: const EdgeInsets.only(
-                          left: 10.0, right: 10.0, top: 30.0),
+                          left: 10.0, right: 10.0, top: 5.0),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: status ? 1 : 2,
                         // number of items in each row
@@ -143,20 +146,24 @@ class _AwesomeStoreHomeState extends State<AwesomeStoreHome> {
                         // spacing between rows
                         crossAxisSpacing: 8.0, // spacing between columns
                       ),
-                      itemCount: products.length + 1,
+                      itemCount: products.length + 2,
                       itemBuilder: (context, index) {
                         if (index < products.length) {
                           final product = products[index];
                           return ProductCard(
-                            imageUrl: product['images'][0],
+                            id: product["id"],
+                            images: product['images'],
                             name: product['title'],
                             price: product['price'],
+                            description: product['description'],
                           );
                         } else {
                           return const Padding(
                               padding: EdgeInsets.symmetric(vertical: 10),
-                              child:
-                                  Center(child: CircularProgressIndicator()));
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: Colors.black,
+                              )));
                         }
                       },
                     )),
@@ -165,52 +172,3 @@ class _AwesomeStoreHomeState extends State<AwesomeStoreHome> {
     ));
   }
 }
-
-class ProductCard extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final int price;
-
-  const ProductCard(
-      {super.key,
-      required this.imageUrl,
-      required this.name,
-      required this.price});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-              child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(imageUrl)),
-                borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    topLeft: Radius.circular(20))),
-          )),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text(
-              name,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 20),
-            child: Text("\$ ${price.toStringAsFixed(2)}",
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w400)),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
